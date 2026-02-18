@@ -1,0 +1,19 @@
+name: Keep Supabase & Render Alive
+
+on:
+  schedule:
+    # Roda todos os dias às 09:00 UTC (06:00 Brasil)
+    # Isso garante que o Supabase nunca fique 7 dias inativo
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Permite você clicar num botão "Run" para testar manualmente
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wake up backend and database
+        run: |
+          echo "Acordando o Render e consultando o Supabase..."
+          # O -I faz apenas uma solicitação de cabeçalho (mais leve),
+          # mas o Strapi ainda precisa processar a rota, acordando o banco.
+          curl -I https://inpsyght.onrender.com/api/formularios
